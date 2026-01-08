@@ -2,6 +2,7 @@ package cat.Lacycat.ultimium.Feature.Curse;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public interface Curse extends Listener {
     int getPriority();
@@ -9,4 +10,6 @@ public interface Curse extends Listener {
     void addIntensity(int n);
     boolean getEnabled();
     void setEnabled(boolean n);
+
+    void register(JavaPlugin plugin);
 }
