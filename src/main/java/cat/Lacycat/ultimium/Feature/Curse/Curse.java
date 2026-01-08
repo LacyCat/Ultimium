@@ -6,6 +6,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 @SuppressWarnings("unused")
 public interface Curse extends Listener {
     /**
+     * 이름을 반환합니다.
+     * @return 이름
+     */
+    String getName();
+
+    /**
+     * 이름 색상을 반환합니다.
+     * @return 이름 색상 (HEX)
+     */
+    String getNameColor();
+
+    /**
      * 우선순위를 반환합니다.
      * @return 우선순위
      */

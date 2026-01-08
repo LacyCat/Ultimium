@@ -1,6 +1,7 @@
-package cat.Lacycat.ultimium.Feature;
+package cat.Lacycat.ultimium.Feature.Manager;
 
 import cat.Lacycat.ultimium.Feature.Curse.Curse;
+import cat.Lacycat.ultimium.Feature.Misc.SomethingFunny;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -18,8 +19,10 @@ import java.util.function.Predicate;
 @SuppressWarnings("unused")
 public class HardCoreManager {
     private final JavaPlugin plugin;
-    public HardCoreManager(JavaPlugin plugin) {
+    private final SomethingFunny sf;
+    public HardCoreManager(JavaPlugin plugin, SomethingFunny sf) {
         this.plugin = plugin;
+        this.sf = sf;
     }
 
     private int Hard = 0;
@@ -154,19 +157,17 @@ public class HardCoreManager {
         }
         return max;
     }
-    
+
     public void processCurseActivation() {
         int currentstage = Hard / 20;
         if (currentstage < 1) return;
         int max = getMaxPriority();
         if (currentPriority > max) {
-            Bukkit.broadcast(Component.text("당신의 시련은 이제 여기서 더 이상 어려워 지지 않을 것 입니다..."));
             return;
         }
         if (checkIsPriorityAllEnabled(currentPriority)) {
             currentPriority++;
             if (currentPriority > max) {
-                Bukkit.broadcast(Component.text("당신의 시련은 이제 여기서 멈출 것 입니다..."));
                 return;
             }
         }
@@ -178,9 +179,9 @@ public class HardCoreManager {
                 }
             }
             for (Player p : Bukkit.getOnlinePlayers()) {
-                p.sendActionBar(Component.text("당신에게 새 저주가 부여되었습니다."));
+                p.sendActionBar(Component.text("새 저주가 당신에게 깃들었습니다"));
                 p.playSound(p.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN,1.0f,1.0f);
-
+                sf.runBruteForceEffectDelayed(p,curse.getName(), curse.getNameColor());
             }
         });
     }

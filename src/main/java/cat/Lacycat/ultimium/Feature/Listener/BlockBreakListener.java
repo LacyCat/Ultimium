@@ -1,6 +1,6 @@
 package cat.Lacycat.ultimium.Feature.Listener;
 
-import cat.Lacycat.ultimium.Feature.HardCoreManager;
+import cat.Lacycat.ultimium.Feature.Manager.HardCoreManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -19,7 +19,7 @@ public class BlockBreakListener implements Listener {
             hcm.add(1);
         }
         if (hcm.get() / 20 >= 1) {
-
+            hcm.processCurseActivation();
         }
     }
 }

@@ -14,6 +14,10 @@ public class KeepInventoryCurse implements Curse{
     private static int Intensity = 1;
     private static final int scale = 25;
     @Override
+    public String getName() { return "소유의 저주"; }
+    @Override
+    public String getNameColor() { return "#D13219"; }
+    @Override
     public int getPriority() { return 1; }
     @Override
     public boolean usesIntensity() { return true; }
