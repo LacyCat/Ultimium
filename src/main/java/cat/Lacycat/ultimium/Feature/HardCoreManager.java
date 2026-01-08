@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings({"unused","ConstantValue"})
+@SuppressWarnings("unused")
 public class HardCoreManager {
     private final JavaPlugin plugin;
     public HardCoreManager(JavaPlugin plugin) {
@@ -42,15 +42,11 @@ public class HardCoreManager {
      */
     public void registerCurse(Curse c) {
         List<Curse> l = curses.get(c.getPriority());
-        if (l != null) {
-            l.add(c);
-            curses.put(c.getPriority(),l);
-        }
-        else if (l == null) {
+        if (l == null) {
             l = new ArrayList<>();
-            l.add(c);
-            curses.put(c.getPriority(),l);
         }
+        l.add(c);
+        curses.put(c.getPriority(),l);
     }
 
     /**

@@ -43,5 +43,4 @@ public class KeepInventoryCurse implements Curse{
     public void register(JavaPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this,plugin);
     }
-
 }
