@@ -16,6 +16,8 @@ public class KeepInventoryCurse implements Curse{
     @Override
     public int getPriority() { return 1; }
     @Override
+    public boolean usesIntensity() { return true; }
+    @Override
     public int getIntensity() { return Intensity; }
     @Override
     public void addIntensity(int n) { Intensity += n; }

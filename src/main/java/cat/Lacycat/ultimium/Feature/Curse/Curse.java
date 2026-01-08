@@ -12,6 +12,12 @@ public interface Curse extends Listener {
     int getPriority();
 
     /**
+     * 현재 저주가 강도 수치를 사용하는지 확인합니다.
+     * @return 강도 사용 여부
+     */
+    boolean usesIntensity();
+
+    /**
      * 현재 저주에 대한 강도를 반환합니다.
      * @return 강도
      */

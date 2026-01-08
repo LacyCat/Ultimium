@@ -1,6 +1,10 @@
 package cat.Lacycat.ultimium.Feature;
 
 import cat.Lacycat.ultimium.Feature.Curse.Curse;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -9,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
 public class HardCoreManager {
@@ -19,6 +24,7 @@ public class HardCoreManager {
 
     private int Hard = 0;
     private final Map<Integer,List<Curse>> curses = new HashMap<>();
+    private int currentPriority = 0;
 
     /**
      * 난이도를 n만큼 더합니다.
@@ -108,14 +114,17 @@ public class HardCoreManager {
         }
     }
 
-    /**
-     * 한 우선순위의 저주들중 하나를 뽑은 뒤 이에 대해 액션을 실행합니다.
-     * @param priority 하나를 뽑을 우선순위
-     * @param action 람다식 액션
-     */
-    public void pickOne(int priority, BiConsumer<Curse,HardCoreManager> action) {
+    public void pickOne(int priority, Predicate<Curse> condition, BiConsumer<Curse,HardCoreManager> action) {
         List<Curse> l = curses.get(priority);
         if (l == null || l.isEmpty()) return;
+        if (condition != null) {
+            List<Curse> filtered = new ArrayList<>();
+            for (Curse i : l) {
+                if (condition.test(i)) filtered.add(i);
+            }
+            if (filtered.isEmpty()) return;
+            l = filtered;
+        }
         Curse picked = l.get(ThreadLocalRandom.current().nextInt(l.size()));
         action.accept(picked,this);
     }
@@ -132,6 +141,48 @@ public class HardCoreManager {
             if (!i.getEnabled()) disabled++;
         }
         return disabled == 0;
+    }
+
+    /**
+     * 최대 우선순위를 반환합니다.
+     * @return 최대 우선순위
+     */
+    public int getMaxPriority() {
+        int max = 0;
+        for (int key : curses.keySet()) {
+            if (key > max) max = key;
+        }
+        return max;
+    }
+    
+    public void processCurseActivation() {
+        int currentstage = Hard / 20;
+        if (currentstage < 1) return;
+        int max = getMaxPriority();
+        if (currentPriority > max) {
+            Bukkit.broadcast(Component.text("당신의 시련은 이제 여기서 더 이상 어려워 지지 않을 것 입니다..."));
+            return;
+        }
+        if (checkIsPriorityAllEnabled(currentPriority)) {
+            currentPriority++;
+            if (currentPriority > max) {
+                Bukkit.broadcast(Component.text("당신의 시련은 이제 여기서 멈출 것 입니다..."));
+                return;
+            }
+        }
+        pickOne(currentPriority, curse -> !curse.getEnabled(), (curse, hcm) -> {
+            curse.setEnabled(true);
+            for (List<Curse> curseList : curses.values()) {
+                for (Curse i : curseList) {
+                    if (i.getEnabled() && i.usesIntensity()) i.addIntensity(1);
+                }
+            }
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.sendActionBar(Component.text("당신에게 새 저주가 부여되었습니다."));
+                p.playSound(p.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN,1.0f,1.0f);
+
+            }
+        });
     }
 
     private boolean checkDuplicated(Curse c) {
