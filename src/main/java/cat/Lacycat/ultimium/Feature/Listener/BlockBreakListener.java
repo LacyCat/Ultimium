@@ -8,7 +8,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.Random;
 
 public class BlockBreakListener implements Listener {
-    private HardCoreManager hcm;
+    private final HardCoreManager hcm;
     public BlockBreakListener(HardCoreManager hcm) {
         this.hcm = hcm;
     }
@@ -16,12 +16,8 @@ public class BlockBreakListener implements Listener {
     @EventHandler
     public void OnBlockBreakEvent(BlockBreakEvent ev) {
         Random r = new Random();
-        if (r.nextBoolean()) {
-            if (r.nextBoolean()) {
-                if (r.nextBoolean()) {
-                    hcm.add(1);
-                }
-            }
+        if (r.nextInt(3) == 1) {
+            hcm.add(1);
         }
     }
 }
