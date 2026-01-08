@@ -30,8 +30,8 @@ public class KeepInventoryCurse implements Curse{
     @EventHandler
     public void OnPlayerDeath(PlayerDeathEvent ev) {
         if (isEnabled) {
-            int chance = (int) Math.round((1.0 - Math.exp(-Intensity / scale)) * 100);
-            if (!(ev.getPlayer() instanceof Player player)) return;
+            int chance = (int) Math.round((1.0 - Math.exp((float)-Intensity / scale)) * 100);
+            Player player = ev.getPlayer();
             var inventory = player.getInventory();
             for (ItemStack item : inventory.getContents()) {
                 if (ThreadLocalRandom.current().nextInt(100) < chance) {
@@ -46,4 +46,5 @@ public class KeepInventoryCurse implements Curse{
     public void register(JavaPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this,plugin);
     }
+
 }
