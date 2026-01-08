@@ -7,33 +7,28 @@ import cat.Lacycat.ultimium.Feature.Listener.EntityDeathListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.K;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public final class Ultimium extends JavaPlugin {
     public HardCoreManager hcm = new HardCoreManager(this);
-    public List<Listener> alltriggers = new ArrayList<>();
+    public List<Listener> AllTriggers = new ArrayList<>();
 
     @Override
     public void onEnable() {
-        alltriggers.add(new BlockBreakListener(hcm));
-        alltriggers.add(new EntityDeathListener(hcm));
-        for (Listener i : alltriggers) {
+        AllTriggers.add(new BlockBreakListener(hcm));
+        AllTriggers.add(new EntityDeathListener(hcm));
+        for (Listener i : AllTriggers) {
             Bukkit.getPluginManager().registerEvents(i,this);
         }
-        // Plugin startup logic
         hcm.registerCurse(new KeepInventoryCurse());
         hcm.initCurse();
     }
 
     @Override
     public void onDisable() {
-        alltriggers.remove(new BlockBreakListener(hcm));
-        alltriggers.remove(new EntityDeathListener(hcm));
-        // Plugin shutdown logic
-        hcm.unregisterCurse(new KeepInventoryCurse());
 
     }
 }

@@ -6,16 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class KeepInventoryCurse implements Curse{
     private static boolean isEnabled = false;
     private static int Intensity = 1;
-    private static int scale = 20;
+    private static final int scale = 20;
     @Override
     public int getPriority() { return 1; }
     @Override
@@ -30,11 +27,11 @@ public class KeepInventoryCurse implements Curse{
     @EventHandler
     public void OnPlayerDeath(PlayerDeathEvent ev) {
         if (isEnabled) {
-            int chance = (int) Math.round((1.0 - Math.exp((float)-Intensity / scale)) * 100);
+            double chance = Math.round((1.0 - Math.exp((double) -Intensity / scale)) * 100.0);
             Player player = ev.getPlayer();
             var inventory = player.getInventory();
             for (ItemStack item : inventory.getContents()) {
-                if (ThreadLocalRandom.current().nextInt(100) < chance) {
+                if (ThreadLocalRandom.current().nextDouble(100) < chance) {
                     if (item == null) continue;
                     inventory.setItem(inventory.first(item),new ItemStack(Material.AIR));
                 }
