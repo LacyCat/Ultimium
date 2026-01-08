@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class KeepInventoryCurse implements Curse{
     private static boolean isEnabled = false;
     private static int Intensity = 1;
-    private static final int scale = 20;
+    private static final int scale = 25;
     @Override
     public int getPriority() { return 1; }
     @Override

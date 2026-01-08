@@ -18,5 +18,8 @@ public class BlockBreakListener implements Listener {
         if (ThreadLocalRandom.current().nextDouble(100.0) < chance) {
             hcm.add(1);
         }
+        if (hcm.get() / 20 >= 1) {
+
+        }
     }
 }
