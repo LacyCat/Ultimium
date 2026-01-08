@@ -10,6 +10,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import java.util.Random;
 
 public class EntityDeathListener implements Listener {
+    private HardCoreManager hcm;
+    public EntityDeathListener(HardCoreManager hcm) {
+        this.hcm = hcm;
+    }
+
     @EventHandler
     public void OnEntityDeath(EntityDeathEvent ev) {
         var source = ev.getDamageSource();
@@ -19,7 +24,7 @@ public class EntityDeathListener implements Listener {
             Random r = new Random();
             if (r.nextBoolean()) {
                 Bukkit.broadcast(Component.text(player.getName() + "님이 " + entity.getName() + "를 죽였습니다."));
-                HardCoreManager.add(1);
+                hcm.add(1);
             }
         }
     }
