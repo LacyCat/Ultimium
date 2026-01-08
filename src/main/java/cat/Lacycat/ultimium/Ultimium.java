@@ -30,6 +30,10 @@ public final class Ultimium extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        alltriggers.remove(new BlockBreakListener(hcm));
+        alltriggers.remove(new EntityDeathListener(hcm));
         // Plugin shutdown logic
+        hcm.unregisterCurse(new KeepInventoryCurse());
+
     }
 }
