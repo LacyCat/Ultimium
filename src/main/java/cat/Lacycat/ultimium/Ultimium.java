@@ -15,7 +15,6 @@ import java.util.List;
 public final class Ultimium extends JavaPlugin {
     public HardCoreManager hcm = new HardCoreManager(this);
     public List<Listener> AllTriggers = new ArrayList<>();
-
     @Override
     public void onEnable() {
         AllTriggers.add(new BlockBreakListener(hcm));
