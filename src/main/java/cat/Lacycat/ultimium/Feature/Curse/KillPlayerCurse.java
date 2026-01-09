@@ -54,31 +54,19 @@ public class KillPlayerCurse implements Curse  {
     public void setEnabled(boolean n) { isEnabled = n; }
 
     @EventHandler
-    public void OnPlayerDeath(PlayerDeathEvent ev) throws InterruptedException {
+    public void OnPlayerDeath(PlayerDeathEvent ev) {
         Player player = ev.getPlayer().getKiller();
         if (isEnabled) {
             if (Intensity > 3) {
                 Intensity = 3;
             }
-
-
             if((Objects.requireNonNull(ev.getPlayer().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
-                double chance = Math.round(
-                        (1.0 - Math.exp((double) -Intensity / scale)) * 100.0);
-                if (ThreadLocalRandom.current().nextDouble(100) < chance) {
-                    if (player == null) return;
-
-                    int score = Intensity;
-
-                    double damage = 0.5 * Intensity;
-
-                    while(score != 0) {
-                        if (ThreadLocalRandom.current().nextInt(1, 5) == 2) {
-                            player.setHealth(+damage);
-                            wait(1000);
-                            score -= 1;
-                        } else if (player.getHealth() <= ThreadLocalRandom.current().nextDouble(3.0, 8.0) || player.getHealth() <= 2.0) break;
-                    }
+                double chance = Math.round((1.0 - Math.exp((double) -Intensity / scale)) * 100.0);
+                if (player == null) return;
+                double damage = ThreadLocalRandom.current().nextDouble(0.5, 1.5) * Intensity - player.getHealth() - 1.0;
+                if (damage > player.getHealth()) return;
+                if (ThreadLocalRandom.current().nextDouble() < chance) {
+                    player.damage(damage);
                 }
             }
         }
