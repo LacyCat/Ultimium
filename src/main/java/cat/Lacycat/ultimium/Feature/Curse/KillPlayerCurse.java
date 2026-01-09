@@ -6,7 +6,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class KillPlayerCurse implements Curse  {
 
-    private static boolean isEnabled = true;
+    private static boolean isEnabled = false;
     /** 최대 3까지*/
     private static int Intensity = 1;
 
