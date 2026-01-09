@@ -61,7 +61,8 @@ public class KillPlayerCurse implements Curse  {
             if (Intensity > 3) {
                 Intensity = 3;
             }
-            if((Objects.requireNonNull(ev.getEntity().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK )) {
+            if(((Objects.requireNonNull(ev.getEntity().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) ||
+                    (Objects.requireNonNull(ev.getEntity().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK))) {
                 double chance = Math.round((1.0 - Math.exp((double) -Intensity / scale)) * 100.0);
                 if (player == null) return;
                 double damage = ThreadLocalRandom.current().nextDouble(1.5, 2.5) * 2 + 1.0 / 2.0;
