@@ -70,13 +70,14 @@ public class KillPlayerCurse implements Curse  {
 
                     int score = Intensity;
 
+                    double damage = 0.5 * Intensity;
+
                     while(score != 0) {
-                        double damage = 5 * Intensity - player.getHealth();
-                        if (ThreadLocalRandom.current().nextBoolean()) {
+                        if (ThreadLocalRandom.current().nextInt(1, 5) == 2) {
                             player.setHealth(+damage);
                             wait(1000);
                             score -= 1;
-                        } else if (player.getHealth() <= ThreadLocalRandom.current().nextDouble(3.0, 5.0)) break;
+                        } else if (player.getHealth() <= ThreadLocalRandom.current().nextDouble(3.0, 8.0) || player.getHealth() <= 2.0) break;
                     }
                 }
             }
