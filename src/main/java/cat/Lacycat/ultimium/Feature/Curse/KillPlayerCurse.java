@@ -55,19 +55,26 @@ public class KillPlayerCurse implements Curse  {
     public void setEnabled(boolean n) { isEnabled = n; }
 
     @EventHandler
-    public void OnEntityDeath(PlayerDeathEvent ev)  {
+    public void OnPlayerDeath(PlayerDeathEvent ev)  {
         Player player = ev.getEntity().getKiller();
         if (isEnabled) {
             if (Intensity > 3) {
                 Intensity = 3;
             }
+
+            int damageMulti = switch (Intensity) {
+                case 2 -> 3;
+                case 3 -> 5;
+                default -> 2;
+            };
+
             if(((Objects.requireNonNull(ev.getEntity().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) ||
                     (Objects.requireNonNull(ev.getEntity().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK))) {
                 double chance = Math.round((1.0 - Math.exp((double) -Intensity / scale)) * 100.0);
                 if (player == null) return;
-                double damage = ThreadLocalRandom.current().nextDouble(1.5, 2.5) * 2 + 1.0 / 2.0;
+                double damage = ThreadLocalRandom.current().nextDouble(1.5, 3.5) * damageMulti + 1.0 / 2.0;
                 if (ThreadLocalRandom.current().nextDouble(100) < chance) {
-                    player.sendActionBar(Component.text("화가 난 영혼이 당신에게 저주를 겁니다."));
+                    player.sendActionBar(Component.text( "§c화가 난 영혼§f인 "+ev.getEntity().getName() +"(이)가 당신에게 §4저주를 겁니다.§f"));
                     player.playSound(player.getLocation(), Sound.AMBIENT_CAVE, 3.0f, 1.0f);
                     player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 3.0f, 1.0f);
                     player.damage(damage);
