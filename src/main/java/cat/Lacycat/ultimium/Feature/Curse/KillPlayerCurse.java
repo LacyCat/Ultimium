@@ -1,18 +1,16 @@
 package cat.Lacycat.ultimium.Feature.Curse;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class KillPlayerCurse implements Curse {
+public class KillPlayerCurse implements Curse  {
 
     private static boolean isEnabled = false;
     private static int Intensity = 1;
@@ -55,7 +53,7 @@ public class KillPlayerCurse implements Curse {
     public void setEnabled(boolean n) { isEnabled = n; }
 
     @EventHandler
-    public void OnPlayerDeath(PlayerDeathEvent ev) {
+    public void OnPlayerDeath(PlayerDeathEvent ev) throws InterruptedException {
         Player player = ev.getEntity().getKiller();
         if (isEnabled) {
             if((Objects.requireNonNull(ev.getEntity().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
@@ -67,9 +65,9 @@ public class KillPlayerCurse implements Curse {
                     while(ThreadLocalRandom.current().nextBoolean()) {
                         if (ThreadLocalRandom.current().nextBoolean()) {
                             player.setHealth(player.getHealth() - 0.5);
+                            wait(500);
 
                         } else if (player.getHealth() <= ThreadLocalRandom.current().nextDouble(3.0, 5.0)) break;
-
                     }
                 }
             }
