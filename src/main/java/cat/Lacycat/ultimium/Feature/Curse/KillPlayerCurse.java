@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class KillPlayerCurse implements Curse  {
 
     private static boolean isEnabled = false;
+    /** 최대 3까지*/
     private static int Intensity = 1;
     /** 1 ~ 25사이 랜덤 값을 scale 형식으로 사용함*/
     private static final int scale =
@@ -42,7 +43,7 @@ public class KillPlayerCurse implements Curse  {
     }
 
     @Override
-    public void addIntensity(int n) { Intensity += n; }
+    public void addIntensity(int n) {  Intensity += n; }
 
     @Override
     public boolean getEnabled() {
@@ -54,19 +55,27 @@ public class KillPlayerCurse implements Curse  {
 
     @EventHandler
     public void OnPlayerDeath(PlayerDeathEvent ev) throws InterruptedException {
-        Player player = ev.getEntity().getKiller();
+        Player player = ev.getPlayer().getKiller();
         if (isEnabled) {
-            if((Objects.requireNonNull(ev.getEntity().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+            if (Intensity > 3) {
+                Intensity = 3;
+            }
+
+
+            if((Objects.requireNonNull(ev.getPlayer().getLastDamageCause())).getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
                 double chance = Math.round(
                         (1.0 - Math.exp((double) -Intensity / scale)) * 100.0);
                 if (ThreadLocalRandom.current().nextDouble(100) < chance) {
                     if (player == null) return;
 
-                    while(ThreadLocalRandom.current().nextBoolean()) {
-                        if (ThreadLocalRandom.current().nextBoolean()) {
-                            player.setHealth(player.getHealth() - 0.5);
-                            wait(1000);
+                    int score = Intensity;
 
+                    while(score != 0) {
+                        double damage = 5 * Intensity - player.getHealth();
+                        if (ThreadLocalRandom.current().nextBoolean()) {
+                            player.setHealth(+damage);
+                            wait(1000);
+                            score -= 1;
                         } else if (player.getHealth() <= ThreadLocalRandom.current().nextDouble(3.0, 5.0)) break;
                     }
                 }
