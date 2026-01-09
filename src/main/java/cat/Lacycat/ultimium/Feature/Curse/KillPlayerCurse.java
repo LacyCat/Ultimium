@@ -65,7 +65,7 @@ public class KillPlayerCurse implements Curse  {
                     while(ThreadLocalRandom.current().nextBoolean()) {
                         if (ThreadLocalRandom.current().nextBoolean()) {
                             player.setHealth(player.getHealth() - 0.5);
-                            wait(500);
+                            wait(1000);
 
                         } else if (player.getHealth() <= ThreadLocalRandom.current().nextDouble(3.0, 5.0)) break;
                     }
