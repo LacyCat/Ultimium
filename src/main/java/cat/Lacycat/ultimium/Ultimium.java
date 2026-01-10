@@ -1,6 +1,7 @@
 package cat.Lacycat.ultimium;
 
 import cat.Lacycat.ultimium.Feature.Curse.KeepInventoryCurse;
+import cat.Lacycat.ultimium.Feature.Curse.KillPlayerCurse;
 import cat.Lacycat.ultimium.Feature.Manager.HardCoreManager;
 import cat.Lacycat.ultimium.Feature.Listener.BlockBreakListener;
 import cat.Lacycat.ultimium.Feature.Listener.EntityDeathListener;
@@ -17,6 +18,7 @@ public final class Ultimium extends JavaPlugin {
     public SomethingFunny sf = new SomethingFunny(this);
     public HardCoreManager hcm = new HardCoreManager(this, sf);
     public List<Listener> AllTriggers = new ArrayList<>();
+
     @Override
     public void onEnable() {
         AllTriggers.add(new BlockBreakListener(hcm));
@@ -25,6 +27,7 @@ public final class Ultimium extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(i,this);
         }
         hcm.registerCurse(new KeepInventoryCurse());
+        hcm.registerCurse(new KillPlayerCurse());
         hcm.initCurse();
     }
 
